@@ -5,16 +5,16 @@ public class Position {
   public void forward() {
     switch (direction) {
       case NORTH:
-        y += 1;
+        y = (y + 1) % (GRID_SIZE + 1);
         return;
       case SOUTH:
-        y -=1;
+        y = (y + GRID_SIZE) % (GRID_SIZE + 1);
         return;
       case WEST:
-        x -= 1;
+        x = (x + GRID_SIZE) % (GRID_SIZE + 1);
         return;
       case EAST:
-        x += 1;
+        x = (x + 1) % (GRID_SIZE + 1);
     }
   }
 
@@ -42,4 +42,5 @@ public class Position {
   private int x = 0;
   private int y = 0;
   private Direction direction = Direction.NORTH;
+  private static final int GRID_SIZE = 10;
 }

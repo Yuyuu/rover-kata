@@ -50,4 +50,24 @@ class PositionTest extends Specification {
     1    | 1    | Direction.SOUTH || 1     | 0
     1    | 1    | Direction.WEST  || 0     | 1
   }
+
+  def "wraps around when reaching the edge of the grid"() {
+    given:
+    def position = new Position(x: preX, y: preY, direction: direction)
+
+    when:
+    position.forward()
+
+    then:
+    position.x() == postX
+    position.y() == postY
+    position.direction() == direction
+
+    where:
+    preX | preY | direction       || postX | postY
+    5    | 0    | Direction.SOUTH || 5     | 10
+    10   | 2    | Direction.EAST  || 0     | 2
+    3    | 10   | Direction.NORTH || 3     | 0
+    0    | 10   | Direction.WEST  || 10    | 10
+  }
 }
