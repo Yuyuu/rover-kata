@@ -58,4 +58,32 @@ class RoverTest extends Specification {
     then:
     newPosition.toString() == "0,0,N"
   }
+
+  def "can move forward in the current direction"() {
+    given:
+    def rover = new Rover()
+
+    when:
+    def newPosition = rover.move()
+    then:
+    newPosition.toString() == "0,1,N"
+
+    when:
+    rover.rotateRight();
+    newPosition = rover.move()
+    then:
+    newPosition.toString() == "1,1,E"
+
+    when:
+    rover.rotateRight();
+    newPosition = rover.move()
+    then:
+    newPosition.toString() == "1,0,S"
+
+    when:
+    rover.rotateRight();
+    newPosition = rover.move()
+    then:
+    newPosition.toString() == "0,0,W"
+  }
 }

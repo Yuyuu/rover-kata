@@ -2,6 +2,11 @@ package model;
 
 public class Rover {
 
+  public Position move() {
+    position.forward();
+    return position;
+  }
+
   public Position rotateRight() {
     position.rotate(Rotation.RIGHT);
     return position;
@@ -16,5 +21,5 @@ public class Rover {
     return position.toString();
   }
 
-  private Position position = new Position();
+  private final Position position = new Position();
 }

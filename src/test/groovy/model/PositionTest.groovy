@@ -31,4 +31,23 @@ class PositionTest extends Specification {
     Direction.EAST  | Rotation.RIGHT || Direction.SOUTH
     Direction.EAST  | Rotation.LEFT  || Direction.NORTH
   }
+
+  def "changes according to a forward move"() {
+    given:
+    def position = new Position(x: preX, y: preY, direction: preDirection)
+
+    when:
+    position.forward()
+
+    then:
+    position.x() == postX
+    position.y() == postY
+
+    where:
+    preX | preY | preDirection    || postX | postY
+    0    | 0    | Direction.NORTH || 0     | 1
+    0    | 0    | Direction.EAST  || 1     | 0
+    1    | 1    | Direction.SOUTH || 1     | 0
+    1    | 1    | Direction.WEST  || 0     | 1
+  }
 }
