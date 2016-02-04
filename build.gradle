@@ -21,3 +21,10 @@ dependencies {
   testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
   testCompile 'net.code-story:fluent-rest-test:1.5'
 }
+
+task deps(type: Sync) {
+  from configurations.compile
+  into "$buildDir/deps"
+}
+
+task stage(dependsOn: ["clean", "deps", "jar"])
