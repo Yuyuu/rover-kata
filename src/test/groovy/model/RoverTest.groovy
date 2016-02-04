@@ -86,4 +86,15 @@ class RoverTest extends Specification {
     then:
     newPosition.toString() == "0,0,W"
   }
+
+  def "can apply a sequence of instructions"() {
+    given:
+    def rover = new Rover()
+
+    when:
+    def position = rover.apply(['R', 'M', 'M', 'L', 'M'] as char[])
+
+    then:
+    position.toString() == "2,1,N"
+  }
 }

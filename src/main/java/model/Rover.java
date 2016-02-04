@@ -2,6 +2,15 @@ package model;
 
 public class Rover {
 
+  public Rover() {
+    instructionParser = new InstructionParser(this);
+  }
+
+  public Position apply(char[] instructions) {
+    instructionParser.apply(instructions);
+    return position;
+  }
+
   public Position move() {
     position.forward();
     return position;
@@ -22,4 +31,5 @@ public class Rover {
   }
 
   private final Position position = new Position();
+  private final InstructionParser instructionParser;
 }
