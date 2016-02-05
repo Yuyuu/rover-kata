@@ -2,34 +2,38 @@ package model;
 
 public class Rover {
 
-  public Rover() {
+  public Rover(Grid grid) {
+    this.grid = grid;
     instructionParser = new InstructionParser(this);
   }
 
-  public Position apply(char[] instructions) {
-    instructionParser.apply(instructions);
-    return position;
+  public String processInstructions(char[] instructions) {
+    return instructionParser.apply(instructions);
   }
 
-  public Position move() {
-    position.forward();
-    return position;
+  public boolean move() {
+    final Position nextPosition = position.forward(direction);
+    if (!grid.hasObstacleAt(nextPosition)) {
+      position = nextPosition;
+      return true;
+    }
+    return false;
   }
 
-  public Position rotateRight() {
-    position.rotate(Rotation.RIGHT);
-    return position;
+  public void rotateRight() {
+    direction = direction.rotate(Rotation.RIGHT);
   }
 
-  public Position rotateLeft() {
-    position.rotate(Rotation.LEFT);
-    return position;
+  public void rotateLeft() {
+    direction = direction.rotate(Rotation.LEFT);
   }
 
   public String stringifiedPosition() {
-    return position.toString();
+    return position.toString() + "," + direction.initial();
   }
 
-  private final Position position = new Position();
+  private Position position = new Position(0, 0);
+  private Direction direction = Direction.NORTH;
   private final InstructionParser instructionParser;
+  private final Grid grid;
 }

@@ -6,11 +6,14 @@ public class InstructionParser {
     this.rover = rover;
   }
 
-  public void apply(char[] instructions) {
+  public String apply(char[] instructions) {
     for (char instruction : instructions) {
       switch (instruction) {
         case 'M':
-          rover.move();
+          final boolean hasMoved = rover.move();
+          if (!hasMoved) {
+            return "O," + rover.stringifiedPosition();
+          }
           break;
         case 'L':
           rover.rotateLeft();
@@ -20,6 +23,7 @@ public class InstructionParser {
           break;
       }
     }
+    return rover.stringifiedPosition();
   }
 
   private final Rover rover;

@@ -1,34 +1,30 @@
 package model;
 
+import com.google.common.base.Objects;
+
 public class Position {
 
-  public void forward() {
+  public Position(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  public Position forward(Direction direction) {
+    int gridSize = Grid.GRID_SIZE;
     switch (direction) {
-      case NORTH:
-        y = (y + 1) % (GRID_SIZE + 1);
-        return;
       case SOUTH:
-        y = (y + GRID_SIZE) % (GRID_SIZE + 1);
-        return;
+        return new Position(x, (y + gridSize) % (gridSize + 1));
       case WEST:
-        x = (x + GRID_SIZE) % (GRID_SIZE + 1);
-        return;
+        return new Position((x + gridSize) % (gridSize + 1), y);
       case EAST:
-        x = (x + 1) % (GRID_SIZE + 1);
+        return new Position((x + 1) % (gridSize + 1), y);
+      default:
+        return new Position(x, (y + 1) % (gridSize + 1));
     }
   }
 
-  public Direction rotate(Rotation rotation) {
-    direction = direction.rotate(rotation);
-    return direction;
-  }
-
   public String toString() {
-    return x + "," + y + "," + direction.initial();
-  }
-
-  public Direction direction() {
-    return direction;
+    return x + "," + y;
   }
 
   public int x() {
@@ -39,8 +35,20 @@ public class Position {
     return y;
   }
 
-  private int x = 0;
-  private int y = 0;
-  private Direction direction = Direction.NORTH;
-  private static final int GRID_SIZE = 10;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Position position = (Position) o;
+    return x == position.x &&
+        y == position.y;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(x, y);
+  }
+
+  private final int x;
+  private final int y;
 }

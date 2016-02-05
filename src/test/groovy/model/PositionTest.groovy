@@ -4,47 +4,27 @@ import spock.lang.Specification
 
 class PositionTest extends Specification {
 
-  def "can get the full position as a string"() {
+  def "can get the position as a string"() {
     given:
-    def position = new Position(x: 2, y: 3, direction: Direction.NORTH)
+    def position = new Position(2, 3)
 
     expect:
-    position.toString() == "2,3,N"
+    position.toString() == "2,3"
   }
 
-  def "changes according to a rotation"() {
+  def "calculates a new position according to a forward move"() {
     given:
-    def position = new Position(direction: preDirection)
-
-    expect:
-    position.rotate(rotation) == postDirection
-    position.direction() == postDirection
-
-    where:
-    preDirection    | rotation       || postDirection
-    Direction.NORTH | Rotation.RIGHT || Direction.EAST
-    Direction.NORTH | Rotation.LEFT  || Direction.WEST
-    Direction.SOUTH | Rotation.RIGHT || Direction.WEST
-    Direction.SOUTH | Rotation.LEFT  || Direction.EAST
-    Direction.WEST  | Rotation.RIGHT || Direction.NORTH
-    Direction.WEST  | Rotation.LEFT  || Direction.SOUTH
-    Direction.EAST  | Rotation.RIGHT || Direction.SOUTH
-    Direction.EAST  | Rotation.LEFT  || Direction.NORTH
-  }
-
-  def "changes according to a forward move"() {
-    given:
-    def position = new Position(x: preX, y: preY, direction: preDirection)
+    def position = new Position(preX, preY)
 
     when:
-    position.forward()
+    def nextPosition = position.forward(direction)
 
     then:
-    position.x() == postX
-    position.y() == postY
+    nextPosition.x() == postX
+    nextPosition.y() == postY
 
     where:
-    preX | preY | preDirection    || postX | postY
+    preX | preY | direction       || postX | postY
     0    | 0    | Direction.NORTH || 0     | 1
     0    | 0    | Direction.EAST  || 1     | 0
     1    | 1    | Direction.SOUTH || 1     | 0
@@ -53,15 +33,14 @@ class PositionTest extends Specification {
 
   def "wraps around when reaching the edge of the grid"() {
     given:
-    def position = new Position(x: preX, y: preY, direction: direction)
+    def position = new Position(preX, preY)
 
     when:
-    position.forward()
+    def nextPosition = position.forward(direction)
 
     then:
-    position.x() == postX
-    position.y() == postY
-    position.direction() == direction
+    nextPosition.x() == postX
+    nextPosition.y() == postY
 
     where:
     preX | preY | direction       || postX | postY
